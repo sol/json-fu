@@ -51,7 +51,7 @@ This will resutl in JSON that is equivalent to:
 ```json
 {
   "body": "foobar",
-  "body_size":23
+  "body_size": 6
 }
 ```
 
