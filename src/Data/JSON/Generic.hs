@@ -55,6 +55,8 @@ import qualified Data.Text.Lazy as LT
 import qualified Data.Traversable as T
 import qualified Data.Vector as V
 
+import           Util
+
 -- | Efficiently serialize a JSON value as a lazy 'L.ByteString'.
 encode :: (Data a) => a -> L.ByteString
 encode = E.encode . toJSON
@@ -176,9 +178,10 @@ toJSON_generic = generic
         constrString = pack . showConstr
 
         encodeArgs c = encodeArgs' (constrFields c)
-        encodeArgs' [] [j] = j
-        encodeArgs' [] js  = Array . V.fromList $ js
-        encodeArgs' ns js  = object $ zip (map pack ns) js
+          where
+            encodeArgs' [] [j] = j
+            encodeArgs' [] js  = Array . V.fromList $ js
+            encodeArgs' ns js  = object $ zip ((map pack . normalizeFields (showConstr c)) ns) js
 
 
 fromJSON :: (Data a) => Value -> Result a
@@ -299,7 +302,7 @@ parseJSON_generic j = generic
           go _ c []       (Array js) = construct c (V.toList js) -- no field names
           -- FIXME? We could allow reading an array into a constructor
           -- with field names.
-          go _ c fs@(_:_) (Object o) = selectFields o fs >>=
+          go _ c fs@(_:_) (Object o) = selectFields o (normalizeFields (showConstr c) fs) >>=
                                        construct c -- field names
           go _ c _        jd         = modFail "parseJSON" $
                                        "bad decodeArgs data " ++ show (c, jd)
@@ -315,6 +318,7 @@ parseJSON_generic j = generic
                          (j':js') -> do put js'; lift $ parseJSON j'
 
         -- Select the named fields from a JSON object.
+        selectFields :: Monad m => Object -> [String] -> m [Value]
         selectFields fjs = mapM $ \f ->
            maybe (modFail "parseJSON" $ "field does not exist " ++ f) return $
              H.lookup (pack f) fjs
