@@ -1,4 +1,4 @@
-# json-fu: JSON serialization / deserialization
+# json-fu: Generic JSON serialization / deserialization
 
 ## Requires
 
