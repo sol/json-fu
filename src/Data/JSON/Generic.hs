@@ -15,16 +15,10 @@
 -- This is based on the 'Text.JSON.Generic' package originally written
 -- by Lennart Augustsson.
 
-module Data.JSON.Generic
-    (
-    -- * Decoding and encoding
-      decode
-    , decode'
-    , encode
-    -- * Lower-level conversion functions
-    , fromJSON
-    , toJSON
-    ) where
+module Data.JSON.Generic (
+  fromJSON
+, toJSON
+) where
 
 import Control.Applicative ((<$>))
 import Control.Arrow (first)
@@ -41,8 +35,6 @@ import Data.Text (Text, pack, unpack)
 import Data.Text.Encoding (encodeUtf8)
 import Data.Time.Clock (UTCTime)
 import Data.Word (Word, Word8, Word16, Word32, Word64)
-import Data.Aeson.Parser (json, json')
-import qualified Data.Aeson.Encode as E
 import qualified Data.JSON.Functions as F
 import qualified Data.Aeson.Types as T
 import qualified Data.ByteString as B
@@ -56,31 +48,6 @@ import qualified Data.Traversable as T
 import qualified Data.Vector as V
 
 import           Util
-
--- | Efficiently serialize a JSON value as a lazy 'L.ByteString'.
-encode :: (Data a) => a -> L.ByteString
-encode = E.encode . toJSON
-{-# INLINE encode #-}
-
--- | Efficiently deserialize a JSON value from a lazy 'L.ByteString'.
--- If this fails due to incomplete or invalid input, 'Nothing' is
--- returned.
---
--- This function parses immediately, but defers conversion.  See
--- 'json' for details.
-decode :: (Data a) => L.ByteString -> Maybe a
-decode = decodeWith json fromJSON
-{-# INLINE decode #-}
-
--- | Efficiently deserialize a JSON value from a lazy 'L.ByteString'.
--- If this fails due to incomplete or invalid input, 'Nothing' is
--- returned.
---
--- This function parses and performs conversion immediately.  See
--- 'json'' for details.
-decode' :: (Data a) => L.ByteString -> Maybe a
-decode' = decodeWith json' fromJSON
-{-# INLINE decode' #-}
 
 type T a = a -> Value
 

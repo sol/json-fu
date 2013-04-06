@@ -16,12 +16,7 @@ module Data.JSON.Functions
     , decode
     , strict
     , lazy
-    , decodeWith
     ) where
-
-import Data.Aeson.Types (Result(..), Value(..))
-import Data.Attoparsec.Char8 hiding (Result)
-import qualified Data.Attoparsec.Lazy as L
 
 import Data.Hashable (Hashable)
 import Data.Text (Text)
@@ -65,12 +60,3 @@ lazy = L.fromChunks . (:[]) . encodeUtf8
 decode :: B.ByteString -> Text
 decode = decodeUtf8
 {-# INLINE decode #-}
-
-decodeWith :: Parser Value -> (Value -> Result a) -> L.ByteString -> Maybe a
-decodeWith p to s =
-    case L.parse p s of
-      L.Done _ v -> case to v of
-                      Success a -> Just a
-                      _         -> Nothing
-      _          -> Nothing
-{-# INLINE decodeWith #-}
