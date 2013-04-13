@@ -44,7 +44,7 @@ data Message = Message {
 } deriving (Eq, Show, Data, Typeable)
 
 message :: ByteString
-message = toJSON (Message "foobar" 23)
+message = toJSON (Message "foobar" 6)
 ~~~
 
 This will resutl in JSON that is equivalent to:
