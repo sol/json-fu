@@ -32,8 +32,8 @@ This will resutl in JSON that is equivalent to:
 }
 ```
 
-`fromJSON person :: Maybe Person` can be used to recover the original data
-type.
+`parseJSON person >>= fromJSON :: Maybe Person` can be used to recover the
+original data type.
 
 ## Strips constructor name from fields
 
@@ -55,5 +55,5 @@ This will resutl in JSON that is equivalent to:
 }
 ```
 
-`fromJSON message :: Maybe Message` can be used to recover the original data
-type.
+`parseJSON message >>= fromJSON :: Maybe Message` can be used to recover the
+original data type.
