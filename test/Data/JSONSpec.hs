@@ -90,7 +90,7 @@ spec = do
             toJSON (SumOfProductsA "test" 23) `shouldBe` "{\"SumOfProductsA\":[\"test\",23]}"
 
       it "encodes records as objects" $ do
-        toJSON (Record "test" 23) `shouldBe` "{\"field_foo\":\"test\",\"field_bar\":23}"
+        toJSON (Record "test" 23) `shouldBe` "{\"field_bar\":23,\"field_foo\":\"test\"}"
 
       it "encodes record-style sum types as nested objects" $ do
         toJSON (RecordSumA "test" 23) `shouldBe` "{\"RecordSumA\":{\"record_sum2\":23,\"record_sum1\":\"test\"}}"

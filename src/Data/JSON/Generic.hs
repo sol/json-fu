@@ -1,4 +1,4 @@
-{-# LANGUAGE PatternGuards, Rank2Types, ScopedTypeVariables #-}
+{-# LANGUAGE CPP, PatternGuards, Rank2Types, ScopedTypeVariables #-}
 
 -- |
 -- Module:      Data.JSON.Generic
@@ -79,8 +79,10 @@ toJSON = toJSON_generic
          `extQ` (T.toJSON :: T Text)
          `extQ` (T.toJSON :: T LT.Text)
          `extQ` (T.toJSON :: T String)
+#if !MIN_VERSION_aeson(0,7,0)
          `extQ` (T.toJSON :: T B.ByteString)
          `extQ` (T.toJSON :: T L.ByteString)
+#endif
          `extQ` (T.toJSON :: T T.Value)
          `extQ` (T.toJSON :: T DotNetTime)
          `extQ` (T.toJSON :: T UTCTime)
@@ -183,8 +185,10 @@ parseJSON j = parseJSON_generic j
              `extR` (value :: F Text)
              `extR` (value :: F LT.Text)
              `extR` (value :: F String)
+#if !MIN_VERSION_aeson(0,7,0)
              `extR` (value :: F B.ByteString)
              `extR` (value :: F L.ByteString)
+#endif
              `extR` (value :: F T.Value)
              `extR` (value :: F DotNetTime)
              `extR` (value :: F UTCTime)
