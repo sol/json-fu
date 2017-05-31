@@ -2,17 +2,17 @@
 
 ## Requires
 
-~~~ {.haskell}
+```haskell
 {-# LANGUAGE DeriveDataTypeable #-}
 
 import Data.Data
 import Data.ByteString (ByteString)
 import Data.JSON
-~~~
+```
 
 ## Converts fields into `snake_case`
 
-~~~ {.haskell}
+```haskell
 data Person = Person {
   firstName :: String
 , lastName  :: String
@@ -21,7 +21,7 @@ data Person = Person {
 
 person :: ByteString
 person = toJSON (Person "John" "Doe" 23)
-~~~
+```
 
 This will resutl in JSON that is equivalent to:
 ```json
@@ -37,7 +37,7 @@ original data type.
 
 ## Strips constructor name from fields
 
-~~~ {.haskell}
+```haskell
 data Message = Message {
   messageBody     :: String
 , messageBodySize :: Int
@@ -45,7 +45,7 @@ data Message = Message {
 
 message :: ByteString
 message = toJSON (Message "foobar" 6)
-~~~
+```
 
 This will resutl in JSON that is equivalent to:
 ```json
